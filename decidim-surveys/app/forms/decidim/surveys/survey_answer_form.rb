@@ -8,7 +8,9 @@ module Decidim
       attribute :body, String
 
       validates :body, presence: true, if: -> { question.mandatory? }
+
       validate :body_not_blank, if: -> { question.mandatory? }
+      validate :max_answers, if: -> { question.max_choices }
 
       def question
         @question ||= survey.questions.find(question_id)
@@ -30,6 +32,12 @@ module Decidim
       def body_not_blank
         return if body.nil?
         errors.add("body", :blank) if body.all?(&:blank?)
+      end
+
+      def max_answers
+        return if body.nil?
+
+        errors.add("body", :too_many_choices) if body.size > question.max_choices
       end
     end
   end
