@@ -30,10 +30,10 @@
             <% else %>
               <div class="answer-survey">
                 <%= decidim_form_for(@form, url: answer_survey_path(survey), method: :post, html: { class: "form answer-survey" }) do |form| %>
-                  <% @form.answers.each_with_index do |answer, answer_idx| %>
+                  <% present_answers_for(@form).each_with_index do |answer, answer_idx| %>
                     <div class="row column">
                       <% field_id = "survey_#{survey.id}_question_#{answer.question.id}_answer_body" %>
-                      <%= label_tag field_id , "#{answer_idx + 1}. #{translated_attribute(answer.question.body)} #{'*' if answer.question.mandatory?}", class: "survey-question" %>
+                      <%= label_tag field_id, answer.label, class: "survey-question" %>
 
                       <% if translated_attribute(answer.question.description).present? %>
                         <div class="help-text">
