@@ -30,6 +30,11 @@ module Decidim
              dependent: :destroy,
              as: :participatory_space
 
+    has_many :members,
+             foreign_key: "decidim_assembly_id",
+             class_name: "Decidim::AssemblyMember",
+             dependent: :destroy
+
     has_many :components, as: :participatory_space, dependent: :destroy
 
     validates :slug, uniqueness: { scope: :organization }
